@@ -15,9 +15,13 @@ app.use(express.json()); // parse any incoming requests body of content-type - a
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
+const allowedOrigins = ['http://localhost:3000', 'https://firstproject-d2c32.web.app'];
+
 app.use((req, res, next) => {
-  //res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin)
+  }
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"

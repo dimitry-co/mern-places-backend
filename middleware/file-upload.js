@@ -21,7 +21,7 @@ const s3 = new AWS.S3({
 const fileUpload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: process.env.S3_Bucket_NAME,
+        bucket: process.env.S3_BUCKET_NAME,
         acl: 'public-read', // Ensures the upload files are publicly accessible
         key: (req, file, cb) => {
             const ext = MIME_TYPE_MAP[file.mimetype];

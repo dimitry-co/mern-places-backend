@@ -36,7 +36,6 @@ const uploadToS3 = async (file) => {
         Bucket: process.env.S3_BUCKET_NAME,
         Key: fileName,
         Body: file.buffer, // uses the buffer from Multer
-        ACL: 'public-read',
         ContentType: file.mimetype
     };
     const upload = new Upload({

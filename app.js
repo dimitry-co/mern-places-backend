@@ -42,6 +42,10 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  // Handle Multer's file size limit error
+  if (error.code == 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ message: 'File size is too large! Maximum allowed size is 500 KB.'});
+  }
   // error handling middleware function - 4 parameters - express knows this is an error handling middleware function because it has 4 parameters
   if (req.file) {
     fs.unlink(req.file.path, err => {

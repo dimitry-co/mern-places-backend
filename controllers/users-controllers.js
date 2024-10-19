@@ -56,7 +56,7 @@ const signup = async (req, res, next) => {
     name,
     email,
     password: hashedPassword,
-    image: req.file.location, // Store the S3 URL instead of the file path
+    image: req.body.image, // Store the S3 URL instead of the file path
     places: [],
   });
 

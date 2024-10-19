@@ -85,7 +85,7 @@ const createPlace = async (req, res, next) => {
     description,
     address,
     location: coordinates,
-    image: req.file.path, // we just store the path of the image file (not the file itself, bc will slow it down and cause bloating)
+    image: req.file.location, // we just store the path of the image file (not the file itself, bc will slow it down and cause bloating)
     creator: req.userData.userId
   });
 

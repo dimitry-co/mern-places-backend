@@ -1,4 +1,4 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
@@ -47,7 +47,24 @@ const uploadToS3 = async (file) => {
     return `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 };
 
-export { fileUpload, uploadToS3 };
+const deleteFromS3 = async (fileKey) => {
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: fileKey, // File key (filename) to delete
+  };
+
+  try {
+    await s3.send(new DeleteObjectCommand(params));
+    console.log(`File ${fileKey} deleted from S3.`);
+  } catch (error) {
+    console.error(`Failed to delete file from S3: ${error.message}`);
+  }
+};
+
+export { fileUpload, uploadToS3, deleteFromS3 };
+
+
+export { fileUpload, uploadToS3, deleteFromS3 };
 
 
 // const fileUpload = multer({

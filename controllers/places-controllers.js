@@ -8,6 +8,7 @@ import { getCoordsForAddress } from "../util/location.js";
 import Place from "../models/place.js";
 import User from "../models/user.js";
 import user from "../models/user.js";
+import { deleteFromS3 } from '../middleware/file-upload.js';
 
 // controller functions for routes in routes/places-routes.js. Deals with the callback logic for each route(middleqare function).
 const getPlaceById = async (req, res, next) => {
@@ -193,7 +194,8 @@ const deletePlace = async (req, res, next) => {
     return next(error);
   }
 
-  const imagePath = place.image;
+  const imageUrl = place.image; // image URL from S3
+  const fileKey = imageUrl.split('/').pop(); // Extract the filename from the URL
 
   try {
     const sess = await mongoose.startSession();
@@ -202,15 +204,14 @@ const deletePlace = async (req, res, next) => {
     place.creator.places.pull(place); // Remove the Place reference from the creator
     await place.creator.save({ session: sess }); // Save the updated creator document
     await sess.commitTransaction(); // Commit the transaction
+
+    // Delete the image from S3
+    await deleteFromS3(fileKey);
   } catch (err) {
     return next(
       new HttpError("Something went wrong, could not delete place.", 500)
     );
   }
-
-  fs.unlink(imagePath, err => {
-    console.log(err);
-  });
 
   res.status(200).json({ message: "Deleted place." });
 };

@@ -64,9 +64,6 @@ const deleteFromS3 = async (fileKey) => {
 export { fileUpload, uploadToS3, deleteFromS3 };
 
 
-export { fileUpload, uploadToS3, deleteFromS3 };
-
-
 // const fileUpload = multer({
 //     limit: 500000,
 //     storage: multer.diskStorage({ // configure where the image is stored

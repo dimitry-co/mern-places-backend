@@ -2,7 +2,7 @@ import { Router } from "express";
 import { check } from "express-validator";
 
 import { getUsers, signup, login } from "../controllers/users-controllers.js";
-import { fileUpload } from "../middleware/file-upload.js";
+import { fileUpload, uploadToS3 } from "../middleware/file-upload.js";
 
 const router = Router();
 
